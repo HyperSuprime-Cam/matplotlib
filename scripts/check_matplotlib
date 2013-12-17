@@ -1,0 +1,26 @@
+#!/usr/bin/env python
+#
+# Check if a compatible version of matplotlib is installed on the system
+#
+# Minimum supported version is 1.2.0
+#
+
+import sys
+
+# See if matplotlib is installed in the first place
+try:
+	import matplotlib as mpl;
+except ImportError:
+	print >>sys.stderr, "error: matplotlib is not installed. please install matplotlib v1.5.1 or later and try again."
+	sys.exit(-1)
+
+# See if the version is compatible
+(major, minor, pl) = [ int(s) for s in (mpl.__version__ + ".0.0.0").split('.')[:3] ]
+if (major < 1) or (major == 1 and minor < 2) or (major == 1 and minor == 2 and pl < 0):
+	print >>sys.stderr, "error: matplotlib version too old (%s). please install matplotlib v1.2.0 or later and try again." % mpl.__version__
+	sys.exit(-1)
+
+print "matplotlib version ok (%s)." % mpl.__version__
+
+# OK.
+sys.exit(0)
