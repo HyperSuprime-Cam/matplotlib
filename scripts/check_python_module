@@ -32,8 +32,8 @@ except ImportError:
 #
 # Check version compatibility
 #
-needver = map(int, version.split('.'))
-havever = map(int, module.__version__.split('.')) + [ 0 ] * len(needver)
+needver = list(map(int, version.split('.')))
+havever = list(map(int, module.__version__.split('.'))) + [ 0 ] * len(needver)
 for a, b in zip(needver, havever):
 	if a > b:
 		print("error: %(module)s version too old (v%(havever)s). please install %(module)s v%(needver)s or later and try again." % {
