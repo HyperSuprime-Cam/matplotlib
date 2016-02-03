@@ -5,6 +5,7 @@
 # usage: check_python_module <module> <min_version>
 #
 
+from __future__ import print_function
 import sys, os.path, importlib, argparse
 
 parser = argparse.ArgumentParser(description="Check presence and version of a Python module")
@@ -22,10 +23,10 @@ version=args.min_version
 try:
 	module = importlib.import_module(modname)
 except ImportError:
-	print >>sys.stderr, "error: %(module)s is not installed. please install %(module)s v%(needver)s or later and try again." % {
+	print("error: %(module)s is not installed. please install %(module)s v%(needver)s or later and try again." % {
 		'module' : modname,
 		'needver' : version
-	}
+	}, file=sys.stderr)
 	exit(-1)
 
 #
@@ -35,17 +36,17 @@ needver = map(int, version.split('.'))
 havever = map(int, module.__version__.split('.')) + [ 0 ] * len(needver)
 for a, b in zip(needver, havever):
 	if a > b:
-		print >>sys.stderr, "error: %(module)s version too old (v%(havever)s). please install %(module)s v%(needver)s or later and try again." % {
+		print("error: %(module)s version too old (v%(havever)s). please install %(module)s v%(needver)s or later and try again." % {
 			'module' : modname,
 			'havever' : module.__version__,
 			'needver' : version
-		}
+		}, file=sys.stderr)
 		exit(-1)
 	elif a < b:
 		break
 
 if args.verbose:
-	print "Using externally provided %s v%s." % (modname, module.__version__)
+	print("Using externally provided %s v%s." % (modname, module.__version__))
 	# print "Located in '%s'." % os.path.dirname(module.__file__)
 
 # OK.
