@@ -26,9 +26,9 @@ try:
     module = importlib.import_module(modname)
 except ImportError:
     print("error: %(module)s is not installed."
-          " Please install %(module)s v%(needver)s or later and try again." % {
+          " Please install %(module)s v%(needVer)s or later and try again." % {
               'module': modname,
-              'needver': version
+              'needVer': version
           },
           file=sys.stderr)
     exit(-1)
@@ -36,15 +36,18 @@ except ImportError:
 #
 # Check version compatibility
 #
-needver = list(map(int, version.split('.')))
-havever = list(map(int, module.__version__.split('.'))) + [0] * len(needver)
-for a, b in zip(needver, havever):
+needVer = list(map(int, version.split('.')))
+moduleVersion = module.__version__
+# Split at + to check for development version (PEP 440)
+moduleVersion = moduleVersion.split('+')
+haveVer = list(map(int, moduleVersion[0].split('.'))) + [0] * len(needVer)
+for a, b in zip(needVer, haveVer):
     if a > b:
-        print("error: %(module)s version too old (v%(havever)s)."
-              " Please install %(module)s v%(needver)s or later and try again." % {
+        print("error: %(module)s version too old (v%(haveVer)s)."
+              " Please install %(module)s v%(needVer)s or later and try again." % {
                   'module': modname,
-                  'havever': module.__version__,
-                  'needver': version
+                  'haveVer': module.__version__,
+                  'needVer': version
               },
               file=sys.stderr)
         exit(-1)
