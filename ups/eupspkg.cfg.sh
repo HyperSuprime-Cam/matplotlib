@@ -1,5 +1,5 @@
 _MODULE="matplotlib"
-_VERSION="1.5.1"
+_VERSION="2.0.2"
 
 config()
 {
